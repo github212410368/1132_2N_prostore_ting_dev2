@@ -13,3 +13,5 @@ $ npx prisma studio
 
 
 ```
+# 1132_2N_prostore_ting_dev2
+# 1132_2N_prostore_ting_dev2
