@@ -6,7 +6,6 @@ function Header_xx() {
   return (
     <header className='flex border-b border-primary-900 px-6 py-4 flex justify-between items-center max-w-7xl'>
       <div className='flex flex-center gap-4'>
-        <TKUDemoDrawer_xx />
         <Logo_xx />
       </div>
       <Navigation_xx />

@@ -11,11 +11,9 @@ const prisma = new PrismaClient();
 
 // Get all cabins
 export async function getCabins() {
-  const data = await prisma.cabin.findMany({
-    orderBy: [{ name: 'asc' }],
-  });
+  const data = await prisma.cabin.findMany();
 
-  return convertToPlainObject(data);
+  return data;
 }
 
 // Get single cabin by it's ID
@@ -30,46 +28,45 @@ export async function getCabinById(productId: string) {
 // Delete a cabin
 export async function deleteCabin(id: string) {
   try {
+    const productExists = await prisma.cabin.findFirst({
+      where: { id },
+    });
+
+    if (!productExists) throw new Error('Product not found');
+
     await prisma.cabin.delete({ where: { id } });
 
-    revalidatePath('/admin/users');
+    revalidatePath('/admin/cabins');
 
     return {
       success: true,
-      message: 'User deleted successfully',
+      message: 'Product deleted successfully',
     };
   } catch (error) {
-    return {
-      success: false,
-      message: formatError(error),
-    };
+    return { success: false, message: formatError(error) };
   }
 }
 
 // Update a cabin
 export async function updateCabin(data: z.infer<typeof updateCabinSchema>) {
   try {
-    // console.log('updata form data', data);
-    const cabin = updateCabinSchema.parse(data);
-    // console.log('updata cabin', cabin);
-    const cabinExists = await prisma.cabin.findFirst({
-      where: { id: cabin.id },
+    const product = updateCabinSchema.parse(data);
+    const productExists = await prisma.product.findFirst({
+      where: { id: product.id },
     });
 
-    // console.log('cabinExists', cabinExists);
+    if (!productExists) throw new Error('Product not found');
 
-    if (!cabinExists) throw new Error('Cabin not found');
-
-    await prisma.cabin.update({
-      where: { id: cabin.id },
-      data: cabin,
+    await prisma.product.update({
+      where: { id: product.id },
+      data: product,
     });
 
-    revalidatePath('/admin/cabins');
+    revalidatePath('/admin/products');
 
     return {
       success: true,
-      message: 'Cabin updated successfully',
+      message: 'Product updated successfully',
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -79,15 +76,15 @@ export async function updateCabin(data: z.infer<typeof updateCabinSchema>) {
 // Create a cabin
 export async function createCabin(data: z.infer<typeof insertCabinSchema>) {
   try {
-    const cabin = insertCabinSchema.parse(data);
-    console.log('cabin', cabin);
-    await prisma.cabin.create({ data: cabin });
+    const product = insertCabinSchema.parse(data);
+    console.log('product', product);
+    await prisma.cabin.create({ data: product });
 
     revalidatePath('/admin/cabins');
 
     return {
       success: true,
-      message: 'Cabin created successfully',
+      message: 'Product created successfully',
     };
   } catch (error) {
     return { success: false, message: formatError(error) };

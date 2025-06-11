@@ -12,7 +12,7 @@ async function main() {
     // skipDuplicates: true,
   });
 
-  console.log('Cabins data seeded successfully');
+  console.log('Products data seeded successfully');
 }
 
 main()

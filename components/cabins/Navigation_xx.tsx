@@ -7,15 +7,15 @@ import React from 'react';
 const links = [
   {
     title: 'Cabins_xx',
-    href: '/cabins_xx',
+    href: '/cabins',
   },
   {
     title: 'About_xx',
-    href: '/cabins_xx/about_xx',
+    href: '/cabins',
   },
   {
     title: 'GuestArea_xx',
-    href: '/cabins_xx/account_xx',
+    href: '/cabins',
   },
 ];
 

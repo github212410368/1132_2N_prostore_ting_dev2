@@ -14,20 +14,14 @@ const UpdateCabinPage_xx = async (props: {
 }) => {
   const { id } = await props.params;
   const cabin = await getCabinById(id);
-  console.log('cabin', cabin);
-  console.log('typeof product', typeof cabin);
+  // console.log('cabin', cabin);
+  // console.log('typeof product', typeof cabin);
   if (!cabin) notFound();
 
   return (
     <>
-      <h2 className='h2-bold'>Update Cabin</h2>
-      <div className='my-8'>
-        {cabin && (
-          <div>
-            <UpdateCabinForm_xx cabin={cabin} cabinId={cabin?.id ?? ''} />
-          </div>
-        )}
-      </div>
+      <h2 className='h2-bold'>Update Cabin_xx</h2>
+      <div className='my-8'></div>
     </>
   );
 };

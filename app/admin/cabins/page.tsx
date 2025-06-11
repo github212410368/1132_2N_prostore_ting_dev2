@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatId } from '@/lib/utils';
+import { formatCurrency, formatId } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Pagination from '@/components/shared/pagination';
@@ -37,11 +37,11 @@ const AdminCabinPage = async (props: {
     <div className='space-y-2'>
       <div className='flex-between'>
         <div className='flex items-center gap-3'>
-          <h1 className='h2-bold'>Cabins</h1>
+          <h1 className='h2-bold'>Cabins_xx</h1>
           {searchText && (
             <div>
               Filtered by <i>&quot;{searchText}&quot;</i>{' '}
-              <Link href='/admin/products'>
+              <Link href='/admin/cabins'>
                 <Button variant='outline' size='sm'>
                   Remove Filter
                 </Button>
@@ -53,41 +53,42 @@ const AdminCabinPage = async (props: {
           <Link href='/admin/cabins/create'>Create Cabin</Link>
         </Button>
       </div>
-      <div className='overflow-x-auto'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>NAME</TableHead>
-              <TableHead>Capacity</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Discount</TableHead>
-              <TableHead>Local Image</TableHead>
-              {/* <TableHead>Description</TableHead> */}
-              <TableHead>ACTIONS</TableHead>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID</TableHead>
+            <TableHead>NAME</TableHead>
+            <TableHead>Capacity</TableHead>
+            <TableHead className='text-right'>PRICE</TableHead>
+            <TableHead>Discount</TableHead>
+            <TableHead>Local Image</TableHead>
+            <TableHead className='w-[100px]'>ACTIONS</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {cabins.map((cabin) => (
+            <TableRow key={cabin.id}>
+              <TableCell>{formatId(cabin.id)}</TableCell>
+              <TableCell>{cabin.name}</TableCell>
+              <TableCell>{cabin.capacity}</TableCell>
+              <TableCell className='text-right'>
+                {formatCurrency(cabin.price.toString())}
+              </TableCell>
+              <TableCell>{cabin.discount}</TableCell>
+              <TableCell>{cabin.local_img}</TableCell>
+              <TableCell className='flex gap-1'>
+                <Button asChild variant='outline' size='sm'>
+                  <Link href={`/admin/products/${cabin.id}`}>Edit</Link>
+                </Button>
+                <DeleteDialog id={cabin.id} action={deleteCabin}></DeleteDialog>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {cabins.map((cabin) => (
-              <TableRow key={cabin.id}>
-                <TableCell>{formatId(cabin.id)}</TableCell>
-                <TableCell>{cabin.name}</TableCell>
-                <TableCell>{cabin.capacity}</TableCell>
-                <TableCell>{cabin.price}</TableCell>
-                <TableCell>{cabin.discount}</TableCell>
-                <TableCell>{cabin.local_img}</TableCell>
-                {/* <TableCell>{cabin.description}</TableCell> */}
-                <TableCell>
-                  <Button asChild variant='outline' size='sm'>
-                    <Link href={`/admin/cabins/${cabin.id}`}>Edit</Link>
-                  </Button>
-                  <DeleteDialog id={cabin.id} action={deleteCabin} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
+      {/* {cabins.totalPages && cabins.totalPages > 1 && (
+        <Pagination page={page} totalPages={cabins.totalPages} />
+      )} */}
     </div>
   );
 };

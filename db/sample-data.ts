@@ -15,8 +15,8 @@ const sampleData = {
       role: 'admin',
     },
     {
-      name: 'Admin3',
-      email: 'admin3@gmail.com',
+      name: 'Admin-hua',
+      email: 'admin-hua@gmail.com',
       password: hashSync('123456', 10),
       role: 'admin',
     },
@@ -33,8 +33,8 @@ const sampleData = {
       role: 'user',
     },
     {
-      name: 'User3',
-      email: 'user3@gmail.com',
+      name: 'User-hua',
+      email: 'user-hua@gmail.com',
       password: hashSync('123456', 10),
       role: 'user',
     },
