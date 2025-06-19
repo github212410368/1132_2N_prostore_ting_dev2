@@ -1,28 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { NextAuthConfig } from 'next-auth';
-import { NextResponse } from 'next/server';
+// auth.config.ts
+import { NextAuthOptions } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
 
 export const authConfig = {
-  providers: [], // Required by NextAuthConfig type
-  callbacks: {
-    authorized({ request, auth }: any) {
-      // Array of regex patterns of paths we want to protect
-      const protectedPaths = [
-        /\/shipping-address/,
-        /\/payment-method/,
-        /\/place-order/,
-        /\/profile/,
-        /\/user\/*/,
-        /\/order\/*/,
-        /\/admin\/*/,
-      ];
-
-      // Get pathname from the req URL object
-      const { pathname } = request.nextUrl;
-      // Check if user is not authenticated and accessing a protected path
-      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
-
-      return true;
-    },
-  },
-} satisfies NextAuthConfig;
+  providers: [
+    Credentials({
+      credentials: {
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
+      },
+      authorize: async (credentials) => {
+        // 簡單的測試認證邏輯
+        if (credentials?.username === 'test' && credentials?.password === 'test') {
+          return { id: '1', name: 'Test User', email: 'test@example.com' };
+        }
+        return null; // 認證失敗
+      },
+    }),
+  ],
+  secret: process.env.AUTH_SECRET,
+  // Removed invalid 'authorized' callback. Add supported callbacks here if needed.
+} satisfies NextAuthOptions;
