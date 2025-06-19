@@ -5,8 +5,11 @@ const OverviewPage_xx = () => {
 };
 
 export async function getServerSideProps() {
-  await requireAdmin();
-  return { props: {} };
+  const adminRedirect = await requireAdmin();
+  if (adminRedirect?.redirect) {
+    return adminRedirect; // 重定向
+  }
+  return { props: {} }; // 正常渲染
 }
 
 export default OverviewPage_xx;
